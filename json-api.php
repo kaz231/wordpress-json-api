@@ -79,5 +79,3 @@ function json_api_dir() {
 add_action('init', 'json_api_init');
 register_activation_hook("$dir/json-api.php", 'json_api_activation');
 register_deactivation_hook("$dir/json-api.php", 'json_api_deactivation');
-
-?>

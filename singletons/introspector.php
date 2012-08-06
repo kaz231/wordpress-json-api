@@ -291,5 +291,3 @@ class JSON_API_Introspector {
   }
   
 }
-
-?>
