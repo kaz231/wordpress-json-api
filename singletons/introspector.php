@@ -279,9 +279,9 @@ class JSON_API_Introspector {
       $query['paged'] = $json_api->query->page;
     }
     
-    if ($json_api->query->count) {
-      $query['posts_per_page'] = $json_api->query->count;
-    }
+    $query['numberposts'] = empty($json_api->query->count) 
+    	? -1 
+    	: $json_api->query->count;
     
     if ($json_api->query->post_type) {
       $query['post_type'] = $json_api->query->post_type;
