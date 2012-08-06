@@ -243,6 +243,10 @@ class JSON_API_Post {
       unset($this->thumbnail);
       return;
     }
+    if (!isset($this->attachments)) {
+      $this->attachments = array();
+    }
+    $this->attachments[] = $json_api->introspector->get_attachment($attachment_id);
     $thumbnail_size = $this->get_thumbnail_size();
     list($thumbnail) = wp_get_attachment_image_src($attachment_id, $thumbnail_size);
     $this->thumbnail = $thumbnail;

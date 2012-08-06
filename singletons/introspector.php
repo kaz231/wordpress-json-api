@@ -208,10 +208,20 @@ class JSON_API_Introspector {
     return $comments;
   }
   
+  public function get_attachment($attachment_id) {
+    $wp_attachments = get_posts(array(
+      'p' => (int)$attachment_id,
+      'post_type' => 'attachment',
+    ));
+    if (!empty($wp_attachments)) {
+      return new JSON_API_Attachment($wp_attachments[0]);
+    }
+  }
+  
   public function get_attachments($post_id) {
     $wp_attachments = get_children(array(
       'post_type' => 'attachment',
-      'post_parent' => $post_id,
+      'post_parent' => (int)$post_id,
       'orderby' => 'menu_order',
       'order' => 'ASC'
     ));
