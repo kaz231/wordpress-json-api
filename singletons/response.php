@@ -30,8 +30,9 @@ class JSON_API_Response {
     
     $data = apply_filters('json_api_encode', $data);
     
-    if (function_exists('json_encode')) {
+    if (false && function_exists('json_encode')) {
       // Use the built-in json_encode function if it's available
+      var_dump(json_decode(json_encode($data))); die;
       return json_encode($data);
     } else {
       // Use PEAR's Services_JSON encoder otherwise

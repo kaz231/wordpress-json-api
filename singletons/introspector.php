@@ -4,15 +4,13 @@ class JSON_API_Introspector {
   
   public function get_posts($query = false, $wp_posts = false) {
     global $post;
-    $this->set_posts_query($query);
-    $output = array();
-    while (have_posts()) {
-      the_post();
-      if ($wp_posts) {
-        $output[] = $post;
-      } else {
-        $output[] = new JSON_API_Post($post);
-      }
+    $query = $this->set_posts_query($query);
+    $output = get_posts($query);
+    if (!$wp_posts) {
+      array_walk(
+        $output, 
+        create_function('&$post, $key', '$post = new JSON_API_post($post);')
+      );
     }
     return $output;
   }
@@ -289,9 +287,7 @@ class JSON_API_Introspector {
       $query['post_type'] = $json_api->query->post_type;
     }
     
-    if (!empty($query)) {
-      query_posts($query);
-    }
+    return $wp_query->query = $query;
   }
   
 }
