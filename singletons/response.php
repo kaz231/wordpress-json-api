@@ -59,13 +59,14 @@ class JSON_API_Response {
   
   function respond($result, $status = 'ok') {
     global $json_api;
+    $charset = get_option('blog_charset');
     $json = $this->get_json($result, $status);
     $status_redirect = "redirect_$status";
     if ($json_api->query->dev || !empty($_REQUEST['dev'])) {
-      // Output the result in a human-redable format
+      // Output the result in a human-readable format
       if (!headers_sent()) {
         header('HTTP/1.0 200 OK');
-        header('Content-Type: text/plain; charset: UTF-8', true);
+        header("Content-Type: text/plain; charset: $charset", true);
       } else {
         echo '<pre>';
       }
@@ -90,7 +91,7 @@ class JSON_API_Response {
     if (!headers_sent()) {
       header('HTTP/1.1 200 OK', true);
       header("Content-Type: application/json; charset=$charset", true);
-      header("Content-Length: " . strlen($result));
+      header('Content-Length: ' . strlen($result));
     }
     echo $result;
   }

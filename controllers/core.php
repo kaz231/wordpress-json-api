@@ -160,6 +160,7 @@ class JSON_API_Core_Controller {
     $posts = $json_api->introspector->get_posts(array(
       'cat' => $category->id
     ));
+    
     return $this->posts_object_result($posts, $category);
   }
   
