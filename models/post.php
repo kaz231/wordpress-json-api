@@ -165,7 +165,9 @@ class JSON_API_Post {
       $content = get_the_content($json_api->query->read_more);
       $content = apply_filters('the_content', $content);
       $content = str_replace(']]>', ']]&gt;', $content);
-      $this->content = $content;
+      $this->content = $json_api->query->content == 'plain' 
+      	? wp_kses($content, array()) 
+      	: $content;
     } else {
       unset($this->content);
     }
