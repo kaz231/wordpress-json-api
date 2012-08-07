@@ -5,7 +5,8 @@ class JSON_API_Query {
   // Default values
   protected $defaults = array(
     'date_format' => 'Y-m-d H:i:s',
-    'read_more' => 'Read more'
+    'read_more' => 'Read more',
+    'count' => 10
   );
   
   function __construct() {
@@ -57,7 +58,7 @@ class JSON_API_Query {
       'author_slug' =>    'author_name',
       'search' =>         's',
       'order' =>          'order',
-      'order_by' =>       'orderby'
+      'order_by' =>       'orderby',
     );
     if ($key == 'date') {
       $date = null;

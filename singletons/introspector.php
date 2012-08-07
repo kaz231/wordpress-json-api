@@ -4,13 +4,15 @@ class JSON_API_Introspector {
   
   public function get_posts($query = false, $wp_posts = false) {
     global $post;
-    $query = $this->set_posts_query($query);
-    $output = get_posts($query);
-    if (!$wp_posts) {
-      array_walk(
-        $output, 
-        create_function('&$post, $key', '$post = new JSON_API_post($post);')
-      );
+    $this->set_posts_query($query);
+    $output = array();
+    while (have_posts()) {
+      the_post();
+      if ($wp_posts) {
+        $output[] = $post;
+      } else {
+        $output[] = new JSON_API_Post($post);
+      }
     }
     return $output;
   }
@@ -289,15 +291,21 @@ class JSON_API_Introspector {
       $query['paged'] = $json_api->query->page;
     }
     
-    $query['numberposts'] = empty($json_api->query->count) 
-    	? -1 
-    	: $json_api->query->count;
-    
+    if ($json_api->query->count) {
+      $query['posts_per_page'] = $json_api->query->count;
+    }
+
     if ($json_api->query->post_type) {
       $query['post_type'] = $json_api->query->post_type;
     }
     
-    return $wp_query->query = $query;
+    if ($json_api->query->ignore_sticky_posts) {
+      $query['ignore_sticky_posts'] = $json_api->query->ignore_sticky_posts;
+    }
+    
+    if (!empty($query)) {
+      query_posts($query);
+    }
   }
   
 }
