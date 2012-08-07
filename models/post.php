@@ -252,7 +252,7 @@ class JSON_API_Post {
       $this->attachments = array();
     }
     foreach ($this->attachments as &$attachment) {
-      if ($attachment['id'] == $attachment_id) {
+      if ($attachment->id == $attachment_id) {
        $attachment_id = -1;
        break;
       }
