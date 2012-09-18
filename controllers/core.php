@@ -196,10 +196,23 @@ class JSON_API_Core_Controller {
   
   public function get_search_results() {
     global $json_api;
+    
     if ($json_api->query->search) {
-      $posts = $json_api->introspector->get_posts(array(
+      
+      $q = array(
         's' => $json_api->query->search
-      ));
+      );
+      
+      extract($json_api->query->get(array('author_id', 'category_id')));
+      if($author_id && ($author = $json_api->introspector->get_current_author()) != null){
+          $q['author'] = $author->id;
+      }
+      
+      if($category_id && ($category = $json_api->introspector->get_current_category()) != null){
+          $q['cat'] = $category->id;
+      }
+        
+      $posts = $json_api->introspector->get_posts($q);
       $this->trim_by_query($posts);
     } else {
       $json_api->error("Include 'search' var in your request.");
@@ -309,5 +322,7 @@ class JSON_API_Core_Controller {
       'posts' => $posts
     );
   }
+  
+  
   
 }
